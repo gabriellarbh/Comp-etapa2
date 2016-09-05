@@ -67,5 +67,7 @@ int getHash(char* text){
   if(inicializado==0)
     return -1;
   HASHCELL* position = getHASHCELL(text);
+  if(position==NULL)
+		return -2;
   return position->token;
 }

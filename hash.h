@@ -1,3 +1,5 @@
+#ifndef HEADERFILE_HASH
+#define HEADERFILE_HASH
 #define HASH_SIZE 997
 typedef struct hashcell {
   char* text;
@@ -11,3 +13,5 @@ HASHCELL* addHash(char* text, int token);
 //and -2 if no record could be found
 int getHash(char* text);
 void initHash(void);
+
+#endif
