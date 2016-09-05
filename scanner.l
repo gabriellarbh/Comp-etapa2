@@ -2,12 +2,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "tokens.h"
-#include "hash.c"
+#include "hash.h"
+#include "y.tab.h"
 
 int running = 1;
 int lines = 0;
-char *yylval;
 
 int isRunning(void);
 int getLineNumber(void);
@@ -18,6 +17,10 @@ int yyerror();
 
 %x COMENTARIO
 %x STRING
+
+%option nounput
+%option noinput
+
 %%
 int					{return KW_INT;}
 float 			    {return KW_FLOAT;}
@@ -41,24 +44,17 @@ FALSE 				{return LIT_FALSE;}
 
 
 
-[A-Za-z_][A-Za-z_0-9]*		{addHash(yytext, TK_IDENTIFIER);return TK_IDENTIFIER;}
-[0-9]*				{addHash(yytext, LIT_INTEGER);return LIT_INTEGER;}
-\'.\'				{addHash(yytext, LIT_CHAR);return LIT_CHAR;} 
+[A-Za-z_][A-Za-z_0-9]*		{yylval.symbol = addHash(yytext, TK_IDENTIFIER);return TK_IDENTIFIER;}
+[0-9]*				{yylval.symbol = addHash(yytext, LIT_INTEGER);return LIT_INTEGER;}
+\'.\'				{yylval.symbol = addHash(yytext, LIT_CHAR);return LIT_CHAR;} 
 [,;:\(\)\[\]\{\}+\-*/<>=!&$]   	{return yytext[0];}	
 [ \t\f\v]				
 \n 				{lines++;}
 "//".*				
 "/*"				{BEGIN(COMENTARIO);}
 
-\"[^"\n]*["\n] {
-               yylval = strdup(yytext+1);
-               if (yylval[yyleng-2] != '"')
-                   return TOKEN_ERROR;
-               else
-                   yylval[yyleng-2] = 0;
-               addHash(yylval, LIT_STRING);
-               return LIT_STRING;
-}
+\"([^\"\n\\]|\\.)*\"      { yylval.symbol = addHash(yytext, LIT_STRING); return LIT_STRING;}
+
 .				{return TOKEN_ERROR;}
 
 <COMENTARIO>"*/"	{BEGIN(INITIAL);}

@@ -1,6 +1,7 @@
 %{
         #include <stdio.h>
         #include <stdlib.h>
+	#include "hash.c"
 
         int getLineNumber();
         int yyerror();
@@ -30,9 +31,16 @@
 %token LIT_FALSE     
 %token LIT_TRUE      
 %token LIT_CHAR      
-%token LIT_STRING    
+%token LIT_STRING   
+
 
 %token TOKEN_ERROR
+
+%union{
+	HASHCELL* symbol;
+}
+
+
 %%
 
 program 
@@ -54,6 +62,7 @@ function
 params
         : datatype TK_IDENTIFIER ',' params
         | datatype TK_IDENTIFIER
+	|
         ;
 block
         : '{' commandlist '}'
@@ -112,7 +121,7 @@ ifelse
 
 forloop
         : KW_FOR '(' expr ')' command
-        : KW_FOR '(' TK_IDENTIFIER '=' expr 'TO' expr ')' command
+        | KW_FOR '(' TK_IDENTIFIER '=' expr "to" expr ')' command
         ;
 literal
         : LIT_INTEGER   
@@ -135,9 +144,8 @@ literal_list
         ;
 
 %%
-int yyerror (char const *s) {
+int yyerror (const char *s) {
     fflush(stderr);
-    fprintf(stderr,"ERROR: %s ---> Line: %d\n", s, getLineNumber());
+    fprintf(stderr,"ERROR: %s ---> Line: %d\n", s, getLineNumber()+1);
     exit(3);
-
 }
