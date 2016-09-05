@@ -31,11 +31,11 @@ int hashFunction(char* text) {
   return address;
 }
 
-int addHash(char* text, int token) {
+HASHCELL* addHash(char* text, int token) {
   if(inicializado==0)
-    return -1;
+    initHash();
   if(getHash(text)>0)
-    return -1;
+    return getHASHCELL(text);
   int address = hashFunction(text);
   HASHCELL* new = (HASHCELL*) malloc(sizeof(HASHCELL));
   new->token = token;
@@ -48,12 +48,11 @@ int addHash(char* text, int token) {
     position = &((*position)->next);
   }
   *position = new;
-  return 1;
+  return position*;
 }
 
-int getHash(char* text){
-  if(inicializado==0)
-    return -1;
+
+HASHCELL* getHASHCELL(char* text) {
   int address = hashFunction(text);
   HASHCELL* position = table[address];
   if(position==NULL)
@@ -63,5 +62,13 @@ int getHash(char* text){
       return -2;
     position = position->next;
   }
+  return position;
+}
+
+
+int getHash(char* text){
+  if(inicializado==0)
+    return -1;
+  HASHCELL* position = getHASHCELL(text);
   return position->token;
 }
