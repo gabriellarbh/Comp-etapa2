@@ -1,7 +1,6 @@
 %{
         #include <stdio.h>
         #include <stdlib.h>
-        #include "hash.h"       
 
         int getLineNumber();
         int yyerror();
@@ -26,16 +25,12 @@
 %token OPERATOR_AND  
 %token OPERATOR_OR   
 
-
-
-
-
 %token<symbol> TK_IDENTIFIER 
 %token<symbol> LIT_INTEGER   
-%token<symbol> LIT_FALSE     
-%token<symbol> LIT_TRUE      
-%token<symbol> LIT_CHAR      
-%token<symbol> LIT_STRING    
+%token LIT_FALSE     
+%token LIT_TRUE      
+%token LIT_CHAR      
+%token LIT_STRING    
 
 %token TOKEN_ERROR
 %%
@@ -128,8 +123,7 @@ literal
         ;
         
 datatype 
-        : KW_INT
-        | KW_INT        
+        : KW_INT       
         | KW_FLOAT      
         | KW_BOOL       
         | KW_CHAR  

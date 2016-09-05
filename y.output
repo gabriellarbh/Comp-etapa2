@@ -3,12 +3,6 @@ Terminals which are not used
    TOKEN_ERROR
 
 
-Rules never reduced
-
-   52 datatype: KW_INT
-
-
-State 1 conflicts: 1 reduce/reduce
 State 53 conflicts: 6 shift/reduce, 2 reduce/reduce
 State 91 conflicts: 1 shift/reduce
 
@@ -84,13 +78,12 @@ Grammar
    50        | LIT_STRING
 
    51 datatype: KW_INT
-   52         | KW_INT
-   53         | KW_FLOAT
-   54         | KW_BOOL
-   55         | KW_CHAR
+   52         | KW_FLOAT
+   53         | KW_BOOL
+   54         | KW_CHAR
 
-   56 literal_list: literal
-   57             | literal literal_list
+   55 literal_list: literal
+   56             | literal literal_list
 
 
 Terminals, with rules where they appear
@@ -114,10 +107,10 @@ $end (0) 0
 '{' (123) 10
 '}' (125) 10
 error (256)
-KW_INT (258) 51 52
-KW_FLOAT (259) 53
-KW_BOOL (260) 54
-KW_CHAR (261) 55
+KW_INT (258) 51
+KW_FLOAT (259) 52
+KW_BOOL (260) 53
+KW_CHAR (261) 54
 KW_IF (262) 42 43
 KW_THEN (263) 42 43
 KW_ELSE (264) 43
@@ -173,11 +166,11 @@ ifelse (57)
 forloop (58)
     on left: 44, on right: 17
 literal (59)
-    on left: 46 47 48 49 50, on right: 4 24 56 57
+    on left: 46 47 48 49 50, on right: 4 24 55 56
 datatype (60)
-    on left: 51 52 53 54 55, on right: 4 5 6 7 8 9
+    on left: 51 52 53 54, on right: 4 5 6 7 8 9
 literal_list (61)
-    on left: 56 57, on right: 5 57
+    on left: 55 56, on right: 5 56
 
 
 state 0
@@ -200,32 +193,29 @@ state 0
 state 1
 
    51 datatype: KW_INT .
-   52         | KW_INT .
 
-    TK_IDENTIFIER  reduce using rule 51 (datatype)
-    TK_IDENTIFIER  [reduce using rule 52 (datatype)]
-    $default       reduce using rule 51 (datatype)
+    $default  reduce using rule 51 (datatype)
 
 
 state 2
 
-   53 datatype: KW_FLOAT .
+   52 datatype: KW_FLOAT .
 
-    $default  reduce using rule 53 (datatype)
+    $default  reduce using rule 52 (datatype)
 
 
 state 3
 
-   54 datatype: KW_BOOL .
+   53 datatype: KW_BOOL .
 
-    $default  reduce using rule 54 (datatype)
+    $default  reduce using rule 53 (datatype)
 
 
 state 4
 
-   55 datatype: KW_CHAR .
+   54 datatype: KW_CHAR .
 
-    $default  reduce using rule 55 (datatype)
+    $default  reduce using rule 54 (datatype)
 
 
 state 5
@@ -499,8 +489,8 @@ state 32
 
 state 33
 
-   56 literal_list: literal .
-   57             | literal . literal_list
+   55 literal_list: literal .
+   56             | literal . literal_list
 
     LIT_INTEGER  shift, and go to state 17
     LIT_FALSE    shift, and go to state 18
@@ -508,7 +498,7 @@ state 33
     LIT_CHAR     shift, and go to state 20
     LIT_STRING   shift, and go to state 21
 
-    $default  reduce using rule 56 (literal_list)
+    $default  reduce using rule 55 (literal_list)
 
     literal       go to state 33
     literal_list  go to state 45
@@ -615,9 +605,9 @@ state 44
 
 state 45
 
-   57 literal_list: literal literal_list .
+   56 literal_list: literal literal_list .
 
-    $default  reduce using rule 57 (literal_list)
+    $default  reduce using rule 56 (literal_list)
 
 
 state 46

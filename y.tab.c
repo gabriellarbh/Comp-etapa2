@@ -126,7 +126,6 @@
 
         #include <stdio.h>
         #include <stdlib.h>
-        #include "hash.h"       
 
         int getLineNumber();
         int yyerror();
@@ -164,7 +163,7 @@ typedef int YYSTYPE;
 
 
 /* Line 216 of yacc.c.  */
-#line 168 "y.tab.c"
+#line 167 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -386,7 +385,7 @@ union yyalloc
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  18
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  58
+#define YYNRULES  57
 /* YYNRULES -- Number of states.  */
 #define YYNSTATES  98
 
@@ -441,7 +440,7 @@ static const yytype_uint8 yyprhs[] =
       72,    75,    77,    79,    81,    85,    87,    89,    94,    99,
      102,   103,   105,   107,   109,   111,   113,   115,   117,   119,
      121,   123,   125,   127,   134,   143,   148,   158,   160,   162,
-     164,   166,   168,   170,   172,   174,   176,   178,   180
+     164,   166,   168,   170,   172,   174,   176,   178
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
@@ -464,19 +463,19 @@ static const yytype_int8 yyrhs[] =
        9,    51,    -1,    10,    31,    53,    32,    -1,    10,    31,
       20,    42,    53,    43,    53,    32,    51,    -1,    21,    -1,
       22,    -1,    23,    -1,    24,    -1,    25,    -1,     3,    -1,
-       3,    -1,     4,    -1,     5,    -1,     6,    -1,    59,    -1,
-      59,    61,    -1
+       4,    -1,     5,    -1,     6,    -1,    59,    -1,    59,    61,
+      -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    44,    44,    45,    46,    50,    51,    52,    56,    60,
-      61,    64,    68,    69,    73,    74,    75,    76,    77,    80,
-      81,    82,    83,    86,    87,    90,    91,    92,    93,    96,
-      97,   100,   101,   102,   103,   104,   105,   106,   107,   108,
-     109,   110,   111,   114,   115,   119,   120,   123,   124,   125,
-     126,   127,   131,   132,   133,   134,   135,   139,   140
+       0,    39,    39,    40,    41,    45,    46,    47,    51,    55,
+      56,    59,    63,    64,    68,    69,    70,    71,    72,    75,
+      76,    77,    78,    81,    82,    85,    86,    87,    88,    91,
+      92,    95,    96,    97,    98,    99,   100,   101,   102,   103,
+     104,   105,   106,   109,   110,   114,   115,   118,   119,   120,
+     121,   122,   126,   127,   128,   129,   133,   134
 };
 #endif
 
@@ -520,7 +519,7 @@ static const yytype_uint8 yyr1[] =
       52,    52,    52,    53,    53,    54,    54,    54,    54,    55,
       55,    56,    56,    56,    56,    56,    56,    56,    56,    56,
       56,    56,    56,    57,    57,    58,    51,    59,    59,    59,
-      59,    59,    60,    60,    60,    60,    60,    61,    61
+      59,    59,    60,    60,    60,    60,    61,    61
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
@@ -531,7 +530,7 @@ static const yytype_uint8 yyr2[] =
        2,     1,     1,     1,     3,     1,     1,     4,     4,     2,
        0,     1,     1,     1,     1,     1,     1,     1,     1,     1,
        1,     1,     1,     6,     8,     4,     9,     1,     1,     1,
-       1,     1,     1,     1,     1,     1,     1,     1,     2
+       1,     1,     1,     1,     1,     1,     1,     2
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -539,11 +538,11 @@ static const yytype_uint8 yyr2[] =
    means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       4,    52,    54,    55,    56,     0,     0,     4,     0,     1,
+       4,    52,    53,    54,    55,     0,     0,     4,     0,     1,
        4,     3,     0,     2,     0,     0,     0,    47,    48,    49,
       50,    51,     5,     0,     0,     0,     7,     0,    10,     0,
-       0,     8,     0,    57,     6,     0,     0,     0,     0,     0,
-       0,     0,    17,    18,     9,    58,     0,     0,    15,    26,
+       0,     8,     0,    56,     6,     0,     0,     0,     0,     0,
+       0,     0,    17,    18,     9,    57,     0,     0,    15,    26,
       16,    23,    25,    51,    14,    21,    11,    13,     0,    26,
        0,     0,    30,    31,    32,    33,    34,    35,    36,    37,
       38,    39,    40,    41,    42,     0,    20,    19,    12,     0,
@@ -1446,7 +1445,7 @@ yyreduce:
     {
       
 /* Line 1267 of yacc.c.  */
-#line 1450 "y.tab.c"
+#line 1449 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1660,7 +1659,7 @@ yyreturn:
 }
 
 
-#line 143 "parser.y"
+#line 137 "parser.y"
 
 int yyerror (char const *s) {
     fflush(stderr);
