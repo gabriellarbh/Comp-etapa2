@@ -2,11 +2,6 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-typedef struct hashcell {
-  char* text;
-  int token;
-  struct hashcell *next;
-}HASHCELL;
 
 int inicializado = 0;
 HASHCELL* table[HASH_SIZE];
@@ -31,6 +26,19 @@ int hashFunction(char* text) {
   return address;
 }
 
+HASHCELL* getHASHCELL(char* text) {
+  int address = hashFunction(text);
+  HASHCELL* position = table[address];
+  if(position==NULL)
+      return NULL;
+  while(strcmp(position->text, text)!=0){
+    if(position->next == NULL)
+      return NULL;
+    position = position->next;
+  }
+  return position;
+}
+
 HASHCELL* addHash(char* text, int token) {
   if(inicializado==0)
     initHash();
@@ -48,22 +56,11 @@ HASHCELL* addHash(char* text, int token) {
     position = &((*position)->next);
   }
   *position = new;
-  return position*;
+  return *position;
 }
 
 
-HASHCELL* getHASHCELL(char* text) {
-  int address = hashFunction(text);
-  HASHCELL* position = table[address];
-  if(position==NULL)
-      return -2;
-  while(strcmp(position->text, text)!=0){
-    if(position->next == NULL)
-      return -2;
-    position = position->next;
-  }
-  return position;
-}
+
 
 
 int getHash(char* text){

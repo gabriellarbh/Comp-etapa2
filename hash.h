@@ -1,6 +1,9 @@
 #define HASH_SIZE 997
-
-typedef HASHCELL;
+typedef struct hashcell {
+  char* text;
+  int token;
+  struct hashcell *next;
+}HASHCELL;
 
 //returns -1 if hash not initialized
 HASHCELL* addHash(char* text, int token);
