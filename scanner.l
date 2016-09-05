@@ -12,6 +12,7 @@ char *yylval;
 int isRunning(void);
 int getLineNumber(void);
 void initMe(void);
+int yyerror();
 %}
 
 

@@ -8,7 +8,7 @@
 #
 
 etapa2: lex.yy.c y.tab.o
-	gcc -o etapa1 lex.yy.c
+	gcc -o etapa2 lex.yy.c y.tab.o
 
 lex.yy.c: scanner.l hash.c hash.h
 	lex scanner.l 
@@ -19,4 +19,4 @@ y.tab.c: parser.y
 	yacc -v -d parser.y
 
 clean:
-	rm *.yy.c etapa1
+	rm *.yy.c etapa2 y.*

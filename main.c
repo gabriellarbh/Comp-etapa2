@@ -65,6 +65,7 @@ int main(int argc, char** argv){
 		printf("\n");
 		}
 	printf("Numero de linhas: %d \n",getLineNumber());
+		yyparse();
 	}
 	else
 		printf("ERRO NO ABRIMENTO DO ARQUIVO!");
