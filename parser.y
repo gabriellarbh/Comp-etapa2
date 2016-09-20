@@ -15,6 +15,7 @@
 %token KW_THEN       
 %token KW_ELSE       
 %token KW_FOR     
+%token KW_TO
 %token KW_READ       
 %token KW_RETURN     
 %token KW_PRINT      
@@ -24,126 +25,134 @@
 %token OPERATOR_EQ   
 %token OPERATOR_NE   
 %token OPERATOR_AND  
-%token OPERATOR_OR   
+%token OPERATOR_OR  
+%token OPERATOR_L
+%token OPERATOR_G
 
-%token<symbol> TK_IDENTIFIER 
-%token<symbol> LIT_INTEGER   
+%token OPERATOR_ATTR
+%token OPERATOR_MUL
+%token OPERATOR_DIV
+%token OPERATOR_SUB
+%token OPERATOR_ADD
+
+
+%token TK_IDENTIFIER 
+%token LIT_INTEGER   
 %token LIT_FALSE     
 %token LIT_TRUE      
 %token LIT_CHAR      
-%token LIT_STRING   
-
-
+%token LIT_STRING  
 %token TOKEN_ERROR
-
 %union{
 	HASHCELL* symbol;
 }
-
-
 %%
+program
+    : declaration ';' program
+    |
+    ;
 
-program 
-        : var_dec ';' program
-        | function program
-        |
-        ;
-        
-var_dec
-        : datatype TK_IDENTIFIER ':' literal
-        | datatype TK_IDENTIFIER '[' LIT_INTEGER ']' ':' literal_list
-        | datatype TK_IDENTIFIER '[' LIT_INTEGER ']'
-        ;
-        
-function
-        : datatype TK_IDENTIFIER '(' params ')' block
-        ;
+datatype 
+    : KW_INT       
+    | KW_FLOAT      
+    | KW_BOOL       
+    | KW_CHAR  
+    ;
 
 params
-        : datatype TK_IDENTIFIER ',' params
-        | datatype TK_IDENTIFIER
-	|
-        ;
-block
-        : '{' commandlist '}'
-        ;
+    : params_non_empty
+    |
+    ;
+params_non_empty
+    : datatype TK_IDENTIFIER ',' params
+    | datatype TK_IDENTIFIER
+    ;
+    
+init_literal_list
+    : init_literal
+    | init_literal init_literal_list
+    ;
+    
+init_literal
+    : LIT_INTEGER   
+    | LIT_FALSE     
+    | LIT_TRUE      
+    | LIT_CHAR      
+    ;
+                
         
-commandlist
-        : command ';' commandlist
-        | command ';'
-        ;
+declaration
+    : datatype TK_IDENTIFIER ':' init_literal
+    | datatype TK_IDENTIFIER '[' LIT_INTEGER ']' ':' init_literal_list
+    | datatype TK_IDENTIFIER '[' LIT_INTEGER ']'
+    | datatype TK_IDENTIFIER '(' params ')' cmdblock
+    ;
         
-command 
-        : KW_PRINT print_param_list
-        | KW_READ TK_IDENTIFIER
-        | KW_RETURN expr
-        | ifelse
-        | forloop
-        ;
-print_param_list
-        : expr print_param_list
-        | LIT_STRING print_param_list
-        | expr
-        | LIT_STRING
-        ;
-expr
-        : value
-        | value operator value
-        ;
-value
-        : literal
-        | TK_IDENTIFIER
-        | TK_IDENTIFIER'['value']'
-        | TK_IDENTIFIER'(' value_list ')'
-        ;
-value_list
-        : value value_list
-        |
-        ;
+        
+cmd
+    : KW_READ TK_IDENTIFIER
+    | KW_PRINT print_list
+    | KW_RETURN exp
+    | cmdblock
+    | TK_IDENTIFIER OPERATOR_ATTR exp
+    | TK_IDENTIFIER '[' LIT_INTEGER ']' OPERATOR_ATTR exp
+    | KW_IF '(' exp ')' KW_THEN cmd
+    | KW_IF '(' exp ')' KW_THEN cmd KW_ELSE cmd
+    | KW_FOR '(' exp ')' cmd
+    | KW_FOR '(' TK_IDENTIFIER OPERATOR_ATTR exp KW_TO exp ')' cmd
+    |
+    ; 
+ 
+print_list
+    : LIT_STRING print_list
+    | exp print_list
+    | LIT_STRING
+    | exp
+    ;
+
+cmdlist
+    : cmd ';' cmdlist
+    | cmd ';'
+    ;
+  
+cmdblock
+    : '{' cmdlist '}'
+    ;
 operator
-        : OPERATOR_LE   
-        | OPERATOR_GE   
-        | OPERATOR_EQ   
-        | OPERATOR_NE   
-        | OPERATOR_AND  
-        | OPERATOR_OR   
-        | '*'
-        | '/'
-        | '-'
-        | '+'
-        | '<'
-        | '>'
-        ;
-ifelse
-        : KW_IF '(' expr ')' KW_THEN command
-        | KW_IF '(' expr ')' KW_THEN command KW_ELSE command
-        ;
-
-forloop
-        : KW_FOR '(' expr ')' command
-        | KW_FOR '(' TK_IDENTIFIER '=' expr "to" expr ')' command
-        ;
-literal
-        : LIT_INTEGER   
-        | LIT_FALSE     
-        | LIT_TRUE      
-        | LIT_CHAR      
-        | LIT_STRING 
-        ;
-        
-datatype 
-        : KW_INT       
-        | KW_FLOAT      
-        | KW_BOOL       
-        | KW_CHAR  
-        ;
-        
-literal_list
-        : literal
-        | literal literal_list
-        ;
-
+    : OPERATOR_LE   
+    | OPERATOR_GE   
+    | OPERATOR_EQ   
+    | OPERATOR_NE  
+    | OPERATOR_L
+    | OPERATOR_G
+    | OPERATOR_AND  
+    | OPERATOR_OR  
+    | OPERATOR_MUL
+    | OPERATOR_DIV
+    | OPERATOR_SUB
+    | OPERATOR_ADD
+    ;
+    
+exp
+    : TK_IDENTIFIER
+    | TK_IDENTIFIER '[' LIT_INTEGER ']'
+    | LIT_INTEGER
+    | LIT_CHAR
+    | exp operator exp
+    | '('exp')'
+    | TK_IDENTIFIER '(' argument_list ')'
+    ;
+argument_list
+    : argument_list_non_empty
+    | 
+    ;
+    
+argument_list_non_empty
+    : exp ',' argument_list
+    | exp
+    ;
 %%
+
 int yyerror (const char *s) {
     fflush(stderr);
     fprintf(stderr,"ERROR: %s ---> Line: %d\n", s, getLineNumber()+1);

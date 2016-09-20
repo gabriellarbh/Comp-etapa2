@@ -1,17 +1,17 @@
-#ifndef HEADERFILE_HASH
-#define HEADERFILE_HASH
 #define HASH_SIZE 997
+
+#define SYMBOL_LIT_INT 1
+#define SYMBOL_LIT_FLOAT 2 
+#define SYMBOL_LIT_CHAR 3
+#define SYMBOL_LIT_IDENTIFIER 4
+#define SYMBOL_LIT_STRING 5
 typedef struct hashcell {
-  char* text;
-  int token;
+  char* key;
+  int type;
   struct hashcell *next;
 }HASHCELL;
 
-//returns -1 if hash not initialized
-HASHCELL* addHash(char* text, int token);
-//returns -1 if hash not initialized
-//and -2 if no record could be found
-int getHash(char* text);
-void initHash(void);
-
-#endif
+//adds value to hash
+HASHCELL* addHash(char *key, int type);
+HASHCELL* getHash(char *key);
+  

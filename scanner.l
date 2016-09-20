@@ -5,6 +5,7 @@
 #include "hash.h"
 #include "y.tab.h"
 
+
 int running = 1;
 int lines = 0;
 
@@ -22,19 +23,27 @@ int yyerror();
 %option noinput
 
 %%
-int					{return KW_INT;}
-float 			    {return KW_FLOAT;}
+int				{return KW_INT;}
+float 			        {return KW_FLOAT;}
 bool 				{return KW_BOOL;}
 char     			{return KW_CHAR;}
-if					{return KW_IF;}
+if				{return KW_IF;}
 then 				{return KW_THEN;}
 else				{return KW_ELSE;}
 for 				{return KW_FOR;}
+to				{return KW_TO;}
 read 				{return KW_READ;}
 return 				{return KW_RETURN;}
 print 				{return KW_PRINT;}
 TRUE 				{return LIT_TRUE;}
 FALSE 				{return LIT_FALSE;}
+"="				{return OPERATOR_ATTR;}
+"*"				{return OPERATOR_MUL;}
+"/"				{return OPERATOR_DIV;}
+"-"				{return OPERATOR_SUB;}
+"+"				{return OPERATOR_ADD;}
+"<"				{return OPERATOR_L;}
+">"				{return OPERATOR_G;}
 "<="				{return OPERATOR_LE;}
 ">="				{return OPERATOR_GE;}
 "=="				{return OPERATOR_EQ;}	
@@ -44,9 +53,9 @@ FALSE 				{return LIT_FALSE;}
 
 
 
-[A-Za-z_][A-Za-z_0-9]*		{yylval.symbol = addHash(yytext, TK_IDENTIFIER);return TK_IDENTIFIER;}
-[0-9]*				{yylval.symbol = addHash(yytext, LIT_INTEGER);return LIT_INTEGER;}
-\'.\'				{yylval.symbol = addHash(yytext, LIT_CHAR);return LIT_CHAR;} 
+[A-Za-z_][A-Za-z_0-9]*		{yylval.symbol = addHash(yytext, SYMBOL_LIT_IDENTIFIER);return TK_IDENTIFIER;}
+[0-9]*				{yylval.symbol = addHash(yytext, SYMBOL_LIT_INT);return LIT_INTEGER;}
+\'.\'				{yylval.symbol = addHash(yytext, SYMBOL_LIT_CHAR);return LIT_CHAR;} 
 [,;:\(\)\[\]\{\}+\-*/<>=!&$]   	{return yytext[0];}	
 [ \t\f\v]				
 \n 				{lines++;}
