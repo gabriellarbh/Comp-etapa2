@@ -20,6 +20,9 @@
 %token KW_RETURN     
 %token KW_PRINT      
 
+%token PARENTESIS
+%token BRACKETS
+
 %token OPERATOR_LE   
 %token OPERATOR_GE   
 %token OPERATOR_EQ   
@@ -46,6 +49,22 @@
 %union{
 	HASHCELL* symbol;
 }
+
+%left OPERATOR_LE OPERATOR_GE OPERATOR_NE OPERATOR_L OPERATOR_G
+%left OPERATOR_AND OPERATOR_OR  
+%left OPERATOR_MUL OPERATOR_DIV
+%left OPERATOR_SUB OPERATOR_ADD
+%right OPERATOR_EQ
+
+%nonassoc IF_SIMPLE
+%nonassoc KW_ELSE
+
+%left '('
+%left '['
+
+%nonassoc EXPRESSION
+
+
 %%
 program
     : declaration ';' program
@@ -96,7 +115,7 @@ cmd
     | cmdblock
     | TK_IDENTIFIER OPERATOR_ATTR exp
     | TK_IDENTIFIER '[' LIT_INTEGER ']' OPERATOR_ATTR exp
-    | KW_IF '(' exp ')' KW_THEN cmd
+    | KW_IF '(' exp ')' KW_THEN cmd %prec IF_SIMPLE
     | KW_IF '(' exp ')' KW_THEN cmd KW_ELSE cmd
     | KW_FOR '(' exp ')' cmd
     | KW_FOR '(' TK_IDENTIFIER OPERATOR_ATTR exp KW_TO exp ')' cmd
@@ -119,31 +138,31 @@ cmdblock
     : '{' cmdlist '}'
     ;
 operator
-    : OPERATOR_LE   
-    | OPERATOR_GE   
+    : OPERATOR_LE 
+    | OPERATOR_GE  
     | OPERATOR_EQ   
     | OPERATOR_NE  
-    | OPERATOR_L
-    | OPERATOR_G
+    | OPERATOR_L 
+    | OPERATOR_G 
     | OPERATOR_AND  
     | OPERATOR_OR  
-    | OPERATOR_MUL
-    | OPERATOR_DIV
+    | OPERATOR_MUL 
+    | OPERATOR_DIV 
     | OPERATOR_SUB
-    | OPERATOR_ADD
+    | OPERATOR_ADD 
     ;
     
 exp
-    : TK_IDENTIFIER
+    : TK_IDENTIFIER 
+    | TK_IDENTIFIER '(' argument_list ')' 
     | TK_IDENTIFIER '[' LIT_INTEGER ']'
     | LIT_INTEGER
     | LIT_CHAR
-    | exp operator exp
+    | exp operator exp %prec EXPRESSION
     | '('exp')'
-    | TK_IDENTIFIER '(' argument_list ')'
     ;
 argument_list
-    : argument_list_non_empty
+    : argument_list_non_empty 
     | 
     ;
     
@@ -155,6 +174,6 @@ argument_list_non_empty
 
 int yyerror (const char *s) {
     fflush(stderr);
-    fprintf(stderr,"ERROR: %s ---> Line: %d\n", s, getLineNumber()+1);
+    fprintf(stderr,"ERROR: %s ---> Line: %d\n", s, getLineNumber());
     exit(3);
 }
