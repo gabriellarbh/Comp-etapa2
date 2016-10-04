@@ -18,9 +18,9 @@ y.tab.o: y.tab.c
 y.tab.c: parser.y
 	yacc -v -d parser.y
 
-etapa2.tgz:
+etapa2.tgz: clean
 	tar cvzf  ../etapa2.tgz . --exclude-vcs
 
 clean:
-	rm *.yy.c etapa2 y.*.* y.*
+	@rm *.yy.c etapa2 y.*.* y.* || true
 	
