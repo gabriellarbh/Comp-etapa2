@@ -114,7 +114,7 @@ cmd
     | KW_RETURN exp
     | cmdblock
     | TK_IDENTIFIER OPERATOR_ATTR exp
-    | TK_IDENTIFIER '[' LIT_INTEGER ']' OPERATOR_ATTR exp
+    | TK_IDENTIFIER '[' exp ']' OPERATOR_ATTR exp
     | KW_IF '(' exp ')' KW_THEN cmd %prec IF_SIMPLE
     | KW_IF '(' exp ')' KW_THEN cmd KW_ELSE cmd
     | KW_FOR '(' exp ')' cmd
@@ -155,7 +155,7 @@ operator
 exp
     : TK_IDENTIFIER 
     | TK_IDENTIFIER '(' argument_list ')' 
-    | TK_IDENTIFIER '[' LIT_INTEGER ']'
+    | TK_IDENTIFIER '[' exp ']'
     | LIT_INTEGER
     | LIT_CHAR
     | exp operator exp %prec EXPRESSION
